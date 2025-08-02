@@ -12,7 +12,7 @@ class EdgarParser:
             self.desired_keys = [
                 "GrossProfit", "OperatingIncomeLoss", "NetIncomeLoss",
                 "Assets", "Liabilities", "StockholdersEquity",
-                "EarningsPerShareBasic", "NetCashProvidedByUsedInOperatingActivities",
+                "NetCashProvidedByUsedInOperatingActivities",
                 "PaymentsToAcquirePropertyPlantAndEquipment"
             ]
 
@@ -22,10 +22,13 @@ class EdgarParser:
         for key in self.desired_keys:
             try:
                 metric = self.data[key]
-                descriptions[key] = metric["description"]
+                description = metric["description"]
+                label = metric["label"]
                 for entry in metric["units"]["USD"]:
                     record = {
                         "Metric": key,
+                        "Label": label.strip(),
+                        "Description": description.strip(),
                         "Value": entry.get("val"),
                         "Date": entry.get("end"),
                         "Form": entry.get("form"),
