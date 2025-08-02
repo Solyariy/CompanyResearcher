@@ -1,7 +1,7 @@
 import aiohttp
 from fastapi import Request
 
-from src.searchers.engines_config import GoogleConfig, GoogleAlertsConfig
+from src.searchers.engines_config import GoogleAlertsConfig, GoogleConfig
 
 
 def get_session(request: Request) -> aiohttp.ClientSession:

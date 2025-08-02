@@ -1,20 +1,20 @@
+from typing import Any
+
 import aiohttp as aio
 from fastapi import HTTPException
-from typing import Any
-import os
-from dotenv import load_dotenv
-load_dotenv()
+
+from src.searchers.engines_config import EdgarConfig
 
 
 class EdgarScraper:
-    def __init__(self, cik: str, session: aio.ClientSession):
+    def __init__(self, cik: str, session: aio.ClientSession, config: EdgarConfig):
         self.cik = cik
         self.session = session
-        self._user_agent_header = os.environ.get("EDGAR_HEADER")
+        self.__config = config
 
     async def scrap_xbrl(self) -> dict[str, Any]:
         headers = {
-            "User-Agent": self._user_agent_header
+            "User-Agent": self.__config.header
         }
         url = f"https://data.sec.gov/api/xbrl/companyfacts/CIK{self.cik}.json"
         async with self.session.get(url=url, headers=headers) as response:

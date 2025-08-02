@@ -1,6 +1,6 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from google.auth.transport.requests import Request
 from google.oauth2 import service_account
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class GoogleConfig(BaseSettings):
@@ -56,3 +56,14 @@ class GoogleAlertsConfig(BaseSettings):
         return {
             "Authorization": f"Bearer {credentials.token}"
         }
+
+
+class EdgarConfig(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_prefix="edgar_",
+        env_file=".env",
+        case_sensitive=False,
+        extra="ignore",
+    )
+
+    header: str | None = None

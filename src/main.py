@@ -6,7 +6,7 @@ from fastapi import FastAPI, Request, Response
 from fastapi.middleware.gzip import GZipMiddleware
 
 from src.api.main_router import router as main_router
-from src.searchers.engines_config import GoogleConfig, GoogleAlertsConfig
+from src.searchers.engines_config import GoogleAlertsConfig, GoogleConfig
 
 
 @asynccontextmanager

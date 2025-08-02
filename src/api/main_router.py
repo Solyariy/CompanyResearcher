@@ -3,8 +3,9 @@ import asyncio
 import aiohttp
 from fastapi import APIRouter, Depends
 
-from src.api.dependencies import get_google_config, get_session, get_google_alerts_config
-from src.searchers.engines_config import GoogleConfig, GoogleAlertsConfig
+from src.api.dependencies import (get_google_alerts_config, get_google_config,
+                                  get_session)
+from src.searchers.engines_config import GoogleAlertsConfig, GoogleConfig
 from src.searchers.google import Find, GoogleEngine
 
 router = APIRouter(prefix="/api/v1")

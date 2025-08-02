@@ -1,5 +1,7 @@
 from typing import Any
+
 import pandas as pd
+
 
 class EdgarParser:
     def __init__(self, data: dict[str, Any], desired_keys: list[str] | None = None):
@@ -40,7 +42,6 @@ class EdgarParser:
         df = pd.DataFrame(data)
         df = df.dropna(subset=["Value", "Date"])
         df["Date"] = pd.to_datetime(df["Date"])
-        df["FiscalYear"] = df["FiscalYear"].astype(int)
         df = df.sort_values(by=["Date"], ascending=True)
         return df
 

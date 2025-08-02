@@ -1,10 +1,12 @@
-import pandas as pd
 import aiohttp as aio
-from src.searchers.edgar import EdgarScraper, EdgarParser
+import pandas as pd
+
+from src.searchers.edgar import EdgarParser, EdgarScraper
+from src.searchers.engines_config import EdgarConfig
 
 
-async def run_edgar(cik: str, session: aio.ClientSession) -> pd.DataFrame:
-    scraper = EdgarScraper(cik, session)
+async def run_edgar(cik: str, session: aio.ClientSession, config: EdgarConfig) -> pd.DataFrame:
+    scraper = EdgarScraper(cik, session, config)
     data = await scraper.scrap_xbrl()
     parser = EdgarParser(data)
     df = parser.parse()
