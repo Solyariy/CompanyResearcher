@@ -17,7 +17,6 @@ class EdgarParser:
             ]
 
     def parse(self) -> pd.DataFrame:
-        descriptions = {}
         all_metrics_data = []
         for key in self.desired_keys:
             try:
@@ -47,4 +46,3 @@ class EdgarParser:
         df["Date"] = pd.to_datetime(df["Date"])
         df = df.sort_values(by=["Date"], ascending=True)
         return df
-
