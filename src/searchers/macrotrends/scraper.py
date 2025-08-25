@@ -1,13 +1,10 @@
 import json
-import os
 from enum import StrEnum
-from pathlib import Path
 from typing import Any
 
-import aiofiles
 import aiohttp as aio
 
-FILEPATH = os.path.join(Path(__file__).resolve().parents[1], "test_files")
+from src.searchers.utils import BaseScraper
 
 
 class URLS(StrEnum):
@@ -16,35 +13,32 @@ class URLS(StrEnum):
     HISTORY = DOMAIN + "/assets/php/stock_data_download.php?t={ticker}"
 
 
-class MTScraper:
-    def __init__(self, session: aio.ClientSession):
+class MTScraper(BaseScraper):
+    def __init__(self, ticker: str, session: aio.ClientSession):
+        self.ticker = ticker
         self.session = session
 
-    @staticmethod
-    async def _save_to_csv(filepath, data):
-        async with aiofiles.open(filepath, "w") as f:
-            await f.write(data)
-
-    async def save_full_history_csv(self, ticker: str) -> str:
-        url = URLS.HISTORY.format(ticker=ticker)
+    async def save_full_history_csv(self) -> str:
+        url = URLS.HISTORY.format(ticker=self.ticker)
         async with self.session.get(url) as response:
             if response.status != 200:
                 raise ValueError(
                     f"MTScraper response code: {response.status}, "
-                    f"for ticker: {ticker}"
+                    f"for ticker: {self.ticker}"
                 )
             data = await response.text()
         data = data[data.find("date,open"):].rstrip()
-        filepath = os.path.join(FILEPATH, f"{ticker}_full_history.csv")
-        await self._save_to_csv(filepath, data)
-        return filepath
+        filename = f"{self.ticker}_full_stock_price_history.csv"
+        await self._save_file(filename, data)
+        return filename
 
-    async def get_stocks_data(self) -> list[dict[str, Any]]:
+    async def get_all_stocks_analysis(self) -> str:
         async with self.session.get(URLS.STOCKS) as response:
             if response.status != 200:
                 raise ValueError(response)
             data = await response.text()
         data = data[data.find("originalData = [") + len("originalData = [") - 1:]
         data = data[:data.find("var filterArray")].strip().removesuffix(";")
-        data = json.loads(data)
-        return data
+        filename = f"{self.ticker}_all_stocks_analysis.json"
+        await self._save_file(filename, data, as_json=True)
+        return filename
