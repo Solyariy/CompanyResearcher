@@ -1,7 +1,8 @@
 import json
 import os
 
-URL_FOR_MAPPINGS = "https://www.sec.gov/files/company_tickers.json"
+
+# URL_FOR_MAPPINGS = "https://www.sec.gov/files/company_tickers.json"
 
 
 def get_cik(ticker: str) -> str | None:

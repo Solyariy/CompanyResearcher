@@ -6,15 +6,12 @@ import pandas as pd
 class EdgarParser:
     def __init__(self, data: dict[str, Any], desired_keys: list[str] | None = None):
         self.data = data
-        if desired_keys:
-            self.desired_keys = desired_keys
-        else:
-            self.desired_keys = [
-                "GrossProfit", "OperatingIncomeLoss", "NetIncomeLoss",
-                "Assets", "Liabilities", "StockholdersEquity",
-                "NetCashProvidedByUsedInOperatingActivities",
-                "PaymentsToAcquirePropertyPlantAndEquipment"
-            ]
+        self.desired_keys = desired_keys or [
+            "GrossProfit", "OperatingIncomeLoss", "NetIncomeLoss",
+            "Assets", "Liabilities", "StockholdersEquity",
+            "NetCashProvidedByUsedInOperatingActivities",
+            "PaymentsToAcquirePropertyPlantAndEquipment"
+        ]
 
     def parse(self) -> pd.DataFrame:
         all_metrics_data = []
