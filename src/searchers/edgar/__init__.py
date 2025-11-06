@@ -1,2 +1,2 @@
-from .parser import EdgarParser
-from .scraper import EdgarScraper
+from .edgar_parser import EdgarParser
+from .edgar_scraper import EdgarScraper

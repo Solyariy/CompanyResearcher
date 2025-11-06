@@ -5,6 +5,7 @@ from selenium_driverless.webdriver import Chrome, ChromeOptions
 
 FILEPATH = os.path.join(Path(__file__).resolve().parent, "test_files")
 
+
 class ChromeEmulator(Chrome):
     def __init__(self, proxy: str = ""):
         if proxy:

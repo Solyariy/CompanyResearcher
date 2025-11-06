@@ -9,31 +9,28 @@ import curl_cffi as cff
 import pandas as pd
 
 from src.searchers.engines_config import EdgarConfig
-from src.searchers.macrotrends.scraper import MTScraper
-from src.searchers.nasdaq.scraper import NasdaqScraper
+from src.searchers.macrotrends.macro_scraper import MTScraper
+from src.searchers.nasdaq.nasdaq_scraper import NasdaqScraper
 from src.searchers.scripts import run_edgar
+from src.base_config import FILEPATH
 
-FILEPATH = os.path.join(Path(__file__).resolve().parent, "test_files")
 
-
-async def test_edgar(cik: str = "0000320193", csv_name: str = "edgar_test"):
-    file_dir = os.path.dirname(__file__)
-    path = os.path.join(file_dir, "test_files", csv_name)
+async def test_edgar(ticker: str = "AAPL", csv_name: str = "edgar_test"):
+    path = os.path.join(FILEPATH, csv_name)
     config = EdgarConfig()
     async with aio.ClientSession(
             connector=aio.TCPConnector(ssl=False)
     ) as session:
-        df = await run_edgar(cik, session, config)
-    df.to_csv(f"{path}_{cik}.csv")
+        df = await run_edgar(ticker, session, config)
+    df.to_csv(f"{path}_{ticker}.csv")
 
 
-async def test_macrotrends_stocks(csv_name_all: str = "macro_test_all_stocks"):
+async def test_macrotrends_stocks(ticker: str = "A"):
     async with aio.ClientSession(
             connector=aio.TCPConnector(ssl=False)
     ) as session:
-        scraper = MTScraper(session, "")
-        stock_data = await scraper.get_all_stocks_analysis()
-        pd.DataFrame(stock_data).to_csv(os.path.join(FILEPATH, csv_name_all + ".csv"), index=False)
+        scraper = MTScraper(session, ticker)
+        await scraper.get_all_stocks_analysis()
 
 
 async def test_macrotrends_history(ticker: str = "A"):

@@ -44,7 +44,7 @@ class URLS(StrEnum):
 
 
 class NasdaqScraper(BaseScraper):
-    def __init__(self, ticker: str, session: cff.AsyncSession):
+    def __init__(self, session: cff.AsyncSession, ticker: str):
         self.ticker = ticker
         self.session = session
 

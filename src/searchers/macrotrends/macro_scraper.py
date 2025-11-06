@@ -1,9 +1,7 @@
-import json
 from enum import StrEnum
-from typing import Any
 
 import aiohttp as aio
-
+import pandas as pd
 from src.searchers.utils import BaseScraper
 
 
@@ -14,11 +12,13 @@ class URLS(StrEnum):
 
 
 class MTScraper(BaseScraper):
-    def __init__(self, ticker: str, session: aio.ClientSession):
+    def __init__(self, session: aio.ClientSession, ticker: str = None):
         self.ticker = ticker
         self.session = session
 
     async def save_full_history_csv(self) -> str:
+        if not self.ticker:
+            raise ValueError("No ticker provided")
         url = URLS.HISTORY.format(ticker=self.ticker)
         async with self.session.get(url) as response:
             if response.status != 200:
@@ -39,6 +39,6 @@ class MTScraper(BaseScraper):
             data = await response.text()
         data = data[data.find("originalData = [") + len("originalData = [") - 1:]
         data = data[:data.find("var filterArray")].strip().removesuffix(";")
-        filename = f"{self.ticker}_all_stocks_analysis.json"
-        await self._save_file(filename, data, as_json=True)
+        filename = "macro_all_stocks_analysis.json"
+        await self._save_file(filename, data)
         return filename
