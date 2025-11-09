@@ -2,8 +2,7 @@ import os
 from pathlib import Path
 
 from selenium_driverless.webdriver import Chrome, ChromeOptions
-
-FILEPATH = os.path.join(Path(__file__).resolve().parent, "test_files")
+from src.base_config import FILEPATH
 
 
 class ChromeEmulator(Chrome):

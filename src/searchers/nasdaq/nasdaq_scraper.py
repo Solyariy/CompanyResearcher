@@ -7,6 +7,7 @@ import curl_cffi as cff
 from src.searchers.utils import BaseScraper
 
 
+# https://www.nasdaq.com/market-activity/stocks/AAPL/news-headlines
 class URLS(StrEnum):
     DOMAIN = "https://www.nasdaq.com"
     NEWS_PATH = DOMAIN + "/market-activity/stocks/{ticker}/news-headlines"

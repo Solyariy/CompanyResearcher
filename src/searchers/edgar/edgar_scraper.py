@@ -9,6 +9,7 @@ from src.searchers.utils import BaseScraper, get_cik
 
 class EdgarScraper(BaseScraper):
     def __init__(self, ticker: str, session: aio.ClientSession, config: EdgarConfig):
+        self.ticker = ticker
         self.cik = get_cik(ticker)
         self.session = session
         self.__config = config
@@ -22,6 +23,6 @@ class EdgarScraper(BaseScraper):
             if response.status != 200:
                 raise HTTPException(response.status, response.content)
             data: dict[str, Any] = await response.json()
-        filename = f"edgar_report_{self.cik}.json"
+        filename = f"{self.ticker}_edgar_report.json"
         await self._save_file(filename, data, as_json=True)
         return filename

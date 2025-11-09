@@ -1,16 +1,14 @@
-import os.path
 from typing import Any
 
 import numpy as np
 import pandas as pd
-from src.base_config import FILEPATH
-from src.searchers.utils.scripts import load_json
+from src.searchers.utils.scripts import load_json, get_path_to_files
 
 
 class MTParser:
     def __init__(self, filename: str):
         self._filename = filename
-        self.filepath = os.path.join(FILEPATH, filename)
+        self.filepath = get_path_to_files(filename)
 
     @property
     def filename(self):
@@ -19,7 +17,7 @@ class MTParser:
     @filename.setter
     def filename(self, value):
         self._filename = value
-        self.filepath = os.path.join(FILEPATH, value)
+        self.filepath = get_path_to_files(value)
 
     def parse(self) -> pd.DataFrame:
         if self.filename.split(".")[-1] == "csv":

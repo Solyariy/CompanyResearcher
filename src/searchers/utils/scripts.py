@@ -30,3 +30,8 @@ def load_json(filename: str):
     filepath = os.path.join(FILEPATH, filename)
     with open(filepath, "r") as f:
         return json.load(f)
+
+
+def get_path_to_files(filename: str):
+    assert filename
+    return os.path.join(FILEPATH, filename)
